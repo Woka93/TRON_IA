@@ -24,7 +24,7 @@ public class GameBoard {
 		}
 	}
 	
-	public Player Play(Player player, char move){
+	public char[][] Play(Player player, char move){
 		
 		if(player.Oriente == move){
 			return null;
@@ -59,7 +59,7 @@ public class GameBoard {
 						break;
 		}
 		
-		return player;
+		return Grille;
 	}
 	
 }
