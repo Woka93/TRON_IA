@@ -24,34 +24,42 @@ public class GameBoard {
 		}
 	}
 	
-	public char[][] Play(Player player, char move){
+	public Player Play(Player player, char move){
 		
 		if(player.Oriente == move){
 			return null;
 		}
 		
-		this.Grille[player.PositionX][player.PositionY] = '+';
+		this.Grille[player.PositionY][player.PositionX] = '+';
 		
 		switch(move){
 		
 			case 'h' :  
 						Grille[player.PositionY-1][player.PositionX] = player.Id;
+						player.PositionY--;
+						player.Oriente = 'b';
 						break; 
 		
 			case 'b' : 	
-						Grille[player.PositionY+1][player.PositionX-1] = player.Id;
+						Grille[player.PositionY+1][player.PositionX] = player.Id;
+						player.PositionY++;
+						player.Oriente = 'h';
 						break;
 			
 			case 'g' :  
 						Grille[player.PositionY][player.PositionX-1] = player.Id;
+						player.PositionX--;
+						player.Oriente = 'd';
 						break;
 			
 			case 'd' :  
 						Grille[player.PositionY][player.PositionX+1] = player.Id;
+						player.PositionX++;
+						player.Oriente = 'g';
 						break;
 		}
 		
-		return Grille;
+		return player;
 	}
 	
 }

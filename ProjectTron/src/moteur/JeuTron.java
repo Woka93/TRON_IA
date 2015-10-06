@@ -8,7 +8,10 @@ public class JeuTron {
 		
 		Player joueur1 = new Player('1',1,1,'b');
 		
-		Grille.Grille = Grille.Play(joueur1, 'd');
+		//System.out.println(joueur1.PositionX);
+		joueur1 = Grille.Play(joueur1, 'd');
+		//System.out.println(joueur1.PositionX);
+		joueur1 = Grille.Play(joueur1, 'd');
 		
 		Affichage(Grille);
 	}
