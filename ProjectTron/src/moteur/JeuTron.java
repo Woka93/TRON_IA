@@ -1,19 +1,27 @@
 package moteur;
 
+import java.util.ArrayList;
+
 public class JeuTron {
 	
 	public static void main(String[] args) {
+		ArrayList<GameBoard> GMpossible = new ArrayList<GameBoard>();
 		GameBoard Grille = new GameBoard();
-		Grille.InitGrille();
 		
 		Player joueur1 = new Player('1',1,1,'b');
 		
-		//System.out.println(joueur1.PositionX);
-		Grille.Grille = Grille.Play(joueur1, 'd');
-		//System.out.println(joueur1.PositionX);
-		Grille.Grille = Grille.Play(joueur1, 'd');
+		//Grille.Play(joueur1, 'd');
+		//Grille.Play(joueur1, 'd');
 		
-		Affichage(Grille);
+		//Affichage(Grille);
+		
+		GMpossible = Grille.next(joueur1);
+		
+		for (int i = 0; i < GMpossible.size(); i++) {
+			System.out.println("===============================");
+			Affichage(GMpossible.get(i));
+		}
+				
 	}
 
 	
