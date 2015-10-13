@@ -10,9 +10,8 @@ public class Player {
 	public Player (char Id, int PositionX, int PositionY, char Oriente) {
 		
 		this.Id = Id;
-		this.PositionX = PositionX;
-		this.PositionY = PositionY;
+		this.PositionX = PositionX; //Hauteur
+		this.PositionY = PositionY;	//Longueur
 		this.Oriente = Oriente;
 	}
-
 }

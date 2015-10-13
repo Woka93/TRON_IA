@@ -4,16 +4,16 @@ import java.util.ArrayList;
 
 public class GameBoard {
 	
-	int Longueur;
-	int Hauteur;
+	int Longueur; 	//PositionX
+	int Hauteur;	//PositionY
 	char[][] Grille;
-	
 	
 	public GameBoard () {
 		
 		this.Longueur = 10;
 		this.Hauteur = 10;
 		this.Grille = new char [this.Hauteur][this.Longueur];
+		
 		InitGrille();
 	}
 	
@@ -29,41 +29,39 @@ public class GameBoard {
 
 	public GameBoard Play(Player player, char move){
 		
-		GameBoard GameBoard = new GameBoard();
-		
 		if(player.Oriente == move){
 			return this;
 		}
 		
-		GameBoard.Grille[player.PositionY][player.PositionX] = '+';
+		this.Grille[player.PositionY][player.PositionX] = '+';
 		
 		switch(move){
 		
 			case 'h' :  
-						GameBoard.Grille[player.PositionY-1][player.PositionX] = player.Id;
+						this.Grille[player.PositionY-1][player.PositionX] = player.Id;
 						player.PositionY--;
 						player.Oriente = 'b';
 						break; 
 		
 			case 'b' : 	
-						GameBoard.Grille[player.PositionY+1][player.PositionX] = player.Id;
+						this.Grille[player.PositionY+1][player.PositionX] = player.Id;
 						player.PositionY++;
 						player.Oriente = 'h';
 						break;
 			
 			case 'g' :  
-						GameBoard.Grille[player.PositionY][player.PositionX-1] = player.Id;
+						this.Grille[player.PositionY][player.PositionX-1] = player.Id;
 						player.PositionX--;
 						player.Oriente = 'd';
 						break;
 			
 			case 'd' :  
-						GameBoard.Grille[player.PositionY][player.PositionX+1] = player.Id;
+						this.Grille[player.PositionY][player.PositionX+1] = player.Id;
 						player.PositionX++;
 						player.Oriente = 'g';
 						break;
 		}
-		return GameBoard;
+		return this;
 	}
 	
 	public ArrayList<GameBoard> next (Player player) {
@@ -72,38 +70,58 @@ public class GameBoard {
 		Player joueur;
 		GameBoard gm;
 		
-		gm = new GameBoard();
+		gm = CopyGameBoard(this);
 		joueur = new Player(player.Id, player.PositionX, player.PositionY, player.Oriente);
-		if (joueur.PositionY <= this.Hauteur-1) {
-			GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'h');
+		if (joueur.PositionY > 0 && player.Oriente != 'h') {
+			if (gm.Grille[joueur.PositionY-1][joueur.PositionX] == '.') {
+				GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'h');
+			}
 		}
 		
-		gm = new GameBoard();
+		gm = CopyGameBoard(this);
 		joueur = new Player(player.Id, player.PositionX, player.PositionY, player.Oriente);
-		if(joueur.PositionY >= 0) {
-			GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'b');
+		if(joueur.PositionY < this.Hauteur-1 && player.Oriente != 'b') {
+			if (gm.Grille[joueur.PositionY+1][joueur.PositionX] == '.') {
+				GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'b');
+			}
 		}
 
-		gm = new GameBoard();
+		gm = CopyGameBoard(this);
 		joueur = new Player(player.Id, player.PositionX, player.PositionY, player.Oriente);
-		if(joueur.PositionX >= 0) {
-			GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'g');
+		if(joueur.PositionX > 0 && player.Oriente != 'g') {
+			if (gm.Grille[joueur.PositionY][joueur.PositionX-1] == '.') {
+				GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'g');
+			}
 		}
 
-		gm = new GameBoard();
+		gm = CopyGameBoard(this);
 		joueur = new Player(player.Id, player.PositionX, player.PositionY, player.Oriente);
-		if(joueur.PositionX <= this.Longueur-1) {
-			GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'd');
+		if(joueur.PositionX < this.Longueur-1 && player.Oriente != 'd') {
+			if (gm.Grille[joueur.PositionY][joueur.PositionX+1] == '.') {
+				GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'd');
+			}
 		}
 		
 		return GMPossible;
 	}
 	
 	public static ArrayList<GameBoard> AjoutGameBoard (ArrayList<GameBoard> ListeGB, GameBoard GB, Player joueur, char move) {
-		
-		if (GB != (GB = GB.Play(joueur, move))) {
-			ListeGB.add(GB);
-		}
+
+		GB.Play(joueur, move);
+		ListeGB.add(GB);
 		return ListeGB;
 	}
+	
+	public static GameBoard CopyGameBoard (GameBoard gb) {
+		
+		GameBoard gm = new GameBoard();
+		
+		for(int i = 0; i < gb.Hauteur; i++){
+			for(int j = 0; j < gb.Longueur; j++){
+				gm.Grille[i][j] = gb.Grille[i][j];
+			}
+		}
+		return gm;
+	}
+	
 }

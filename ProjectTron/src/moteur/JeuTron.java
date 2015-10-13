@@ -6,22 +6,28 @@ public class JeuTron {
 	
 	public static void main(String[] args) {
 		ArrayList<GameBoard> GMpossible = new ArrayList<GameBoard>();
+		
+		Player joueur1 = new Player('1',0,0,'b');
+		//Player joueur2 = new Player('2',3,3,'b');
 		GameBoard Grille = new GameBoard();
-		
-		Player joueur1 = new Player('1',1,1,'b');
-		
-		//Grille.Play(joueur1, 'd');
-		//Grille.Play(joueur1, 'd');
-		
-		//Affichage(Grille);
+
+		Grille.Grille[0][3] = '+';
+		Affichage(Grille);
+		Grille.Play(joueur1, 'd');
+		Affichage(Grille);
+		Grille.Play(joueur1, 'd');
+		Affichage(Grille);
 		
 		GMpossible = Grille.next(joueur1);
+		
+		if (GMpossible.size() == 0) {
+			System.out.println("Liste vide");
+		}
 		
 		for (int i = 0; i < GMpossible.size(); i++) {
 			System.out.println("===============================");
 			Affichage(GMpossible.get(i));
 		}
-				
 	}
 
 	
