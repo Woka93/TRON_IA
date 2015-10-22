@@ -7,11 +7,11 @@ public class JeuTron {
 	public static void main(String[] args) {
 		ArrayList<GameBoard> GMpossible = new ArrayList<GameBoard>();
 		
-		Player joueur1 = new Player('1',0,0,'b');
+		Player joueur1 = new Player("1",0,0,'b');
 		//Player joueur2 = new Player('2',3,3,'b');
 		GameBoard Grille = new GameBoard();
 
-		Grille.Grille[0][3] = '+';
+		/*Grille.Grille[0][3] = "+";
 		Affichage(Grille);
 		Grille.Play(joueur1, 'd');
 		Affichage(Grille);
@@ -27,7 +27,14 @@ public class JeuTron {
 		for (int i = 0; i < GMpossible.size(); i++) {
 			System.out.println("===============================");
 			Affichage(GMpossible.get(i));
-		}
+		}*/
+		
+		//Affichage(Grille);
+		
+		/*Dijkstra algo = new Dijkstra(Grille, joueur1);
+		GameBoard gm = algo.calculer();
+		Affichage(gm);*/
+		
 	}
 
 	

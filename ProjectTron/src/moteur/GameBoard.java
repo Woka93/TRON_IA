@@ -6,13 +6,13 @@ public class GameBoard {
 	
 	int Longueur; 	//PositionX
 	int Hauteur;	//PositionY
-	char[][] Grille;
+	String[][] Grille;
 	
 	public GameBoard () {
 		
 		this.Longueur = 10;
 		this.Hauteur = 10;
-		this.Grille = new char [this.Hauteur][this.Longueur];
+		this.Grille = new String [this.Hauteur][this.Longueur];
 		
 		InitGrille();
 	}
@@ -20,7 +20,7 @@ public class GameBoard {
 	public void InitGrille(){
 		for(int i = 0; i < Hauteur; i++){
 			for(int j = 0; j < Longueur; j++){
-				Grille[i][j] = '.';
+				Grille[i][j] = ".";
 			}
 		}
 	}
@@ -33,7 +33,7 @@ public class GameBoard {
 			return this;
 		}
 		
-		this.Grille[player.PositionY][player.PositionX] = '+';
+		this.Grille[player.PositionY][player.PositionX] = "+";
 		
 		switch(move){
 		
@@ -73,7 +73,7 @@ public class GameBoard {
 		gm = CopyGameBoard(this);
 		joueur = new Player(player.Id, player.PositionX, player.PositionY, player.Oriente);
 		if (joueur.PositionY > 0 && player.Oriente != 'h') {
-			if (gm.Grille[joueur.PositionY-1][joueur.PositionX] == '.') {
+			if (gm.Grille[joueur.PositionY-1][joueur.PositionX] == ".") {
 				GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'h');
 			}
 		}
@@ -81,7 +81,7 @@ public class GameBoard {
 		gm = CopyGameBoard(this);
 		joueur = new Player(player.Id, player.PositionX, player.PositionY, player.Oriente);
 		if(joueur.PositionY < this.Hauteur-1 && player.Oriente != 'b') {
-			if (gm.Grille[joueur.PositionY+1][joueur.PositionX] == '.') {
+			if (gm.Grille[joueur.PositionY+1][joueur.PositionX] == ".") {
 				GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'b');
 			}
 		}
@@ -89,7 +89,7 @@ public class GameBoard {
 		gm = CopyGameBoard(this);
 		joueur = new Player(player.Id, player.PositionX, player.PositionY, player.Oriente);
 		if(joueur.PositionX > 0 && player.Oriente != 'g') {
-			if (gm.Grille[joueur.PositionY][joueur.PositionX-1] == '.') {
+			if (gm.Grille[joueur.PositionY][joueur.PositionX-1] == ".") {
 				GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'g');
 			}
 		}
@@ -97,7 +97,7 @@ public class GameBoard {
 		gm = CopyGameBoard(this);
 		joueur = new Player(player.Id, player.PositionX, player.PositionY, player.Oriente);
 		if(joueur.PositionX < this.Longueur-1 && player.Oriente != 'd') {
-			if (gm.Grille[joueur.PositionY][joueur.PositionX+1] == '.') {
+			if (gm.Grille[joueur.PositionY][joueur.PositionX+1] == ".") {
 				GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'd');
 			}
 		}
@@ -124,4 +124,7 @@ public class GameBoard {
 		return gm;
 	}
 	
+	public String lireCase(int x, int y) {
+		return Grille[y][x];
+	}
 }

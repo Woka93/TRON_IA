@@ -2,12 +2,12 @@ package moteur;
 
 public class Player {
 	
-	char Id;
+	String Id;
 	int PositionX;
 	int PositionY;
 	char Oriente;
 	
-	public Player (char Id, int PositionX, int PositionY, char Oriente) {
+	public Player (String Id, int PositionX, int PositionY, char Oriente) {
 		
 		this.Id = Id;
 		this.PositionX = PositionX; //Hauteur
