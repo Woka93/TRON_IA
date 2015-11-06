@@ -6,6 +6,7 @@ public class GameBoard {
 	
 	int Longueur; 	//PositionX
 	int Hauteur;	//PositionY
+	char Coup;
 	String[][] Grille;
 	
 	public GameBoard () {
@@ -14,15 +15,16 @@ public class GameBoard {
 		this.Hauteur = 10;
 		this.Grille = new String [this.Hauteur][this.Longueur];
 		
-		InitGrille();
 	}
 	
-	public void InitGrille(){
+	public void InitGrille(Player joueur1, Player joueur2){
 		for(int i = 0; i < Hauteur; i++){
 			for(int j = 0; j < Longueur; j++){
 				Grille[i][j] = ".";
 			}
 		}
+		Grille[joueur1.PositionY][joueur1.PositionX] = "1";
+		Grille[joueur2.PositionY][joueur2.PositionX] = "2";
 	}
 	
 	// Renvoie le GameBoard modifié si pas de problème d'orientation, sinon le GameBoard initial
@@ -64,7 +66,7 @@ public class GameBoard {
 		return this;
 	}
 	
-	public ArrayList<GameBoard> next (Player player) {
+	public ArrayList<GameBoard> next(Player player) {
 		
 		ArrayList<GameBoard> GMPossible = new ArrayList<GameBoard>();
 		Player joueur;
@@ -108,6 +110,7 @@ public class GameBoard {
 	public static ArrayList<GameBoard> AjoutGameBoard (ArrayList<GameBoard> ListeGB, GameBoard GB, Player joueur, char move) {
 
 		GB.Play(joueur, move);
+		GB.Coup = move;
 		ListeGB.add(GB);
 		return ListeGB;
 	}
@@ -125,6 +128,6 @@ public class GameBoard {
 	}
 	
 	public String lireCase(int x, int y) {
-		return Grille[y][x];
+		return Grille[x][y];
 	}
 }
