@@ -6,8 +6,7 @@ public class GameBoard {
 	
 	int Longueur; 	//PositionX
 	int Hauteur;	//PositionY
-	char Coup;
-	Player player;
+	Player[] joueurs;
 	String[][] Grille;
 	
 	public GameBoard () {
@@ -16,117 +15,128 @@ public class GameBoard {
 		this.Hauteur = 10;
 		this.Grille = new String [this.Hauteur][this.Longueur];
 		
+		InitGrille();
 	}
 	
-	public void InitGrille(Player joueur1, Player joueur2){
+	public void InitGrille(){
 		for(int i = 0; i < Hauteur; i++){
 			for(int j = 0; j < Longueur; j++){
 				Grille[i][j] = ".";
 			}
 		}
-		Grille[joueur1.PositionY][joueur1.PositionX] = "1";
-		Grille[joueur2.PositionY][joueur2.PositionX] = "2";
+	}
+	
+	public void addPlayers (Player[] players) {
+		joueurs = new Player[players.length];
+		for (int i = 0; i < players.length; i++) {
+			joueurs[i] = players[i];
+		}
 	}
 	
 	// Renvoie le GameBoard modifié si pas de problème d'orientation, sinon le GameBoard initial
 
-	public GameBoard Play(Player player, char move){
+	public GameBoard Play(int player, char move){
 		
-		if(player.Oriente == move){
+		if(joueurs[player].Oriente == move){
 			return this;
 		}
 		
-		this.Grille[player.PositionY][player.PositionX] = "+";
+		this.Grille[joueurs[player].PositionY][joueurs[player].PositionX] = "+";
 		
 		switch(move){
 		
 			case 'h' :  
-						this.Grille[player.PositionY-1][player.PositionX] = player.Id;
-						player.PositionY--;
-						player.Oriente = 'b';
+						this.Grille[joueurs[player].PositionY-1][joueurs[player].PositionX] = joueurs[player].Id;
+						joueurs[player].PositionY--;
+						joueurs[player].Oriente = 'b';
 						break; 
 		
 			case 'b' : 	
-						this.Grille[player.PositionY+1][player.PositionX] = player.Id;
-						player.PositionY++;
-						player.Oriente = 'h';
+						this.Grille[joueurs[player].PositionY+1][joueurs[player].PositionX] = joueurs[player].Id;
+						joueurs[player].PositionY++;
+						joueurs[player].Oriente = 'h';
 						break;
 			
 			case 'g' :  
-						this.Grille[player.PositionY][player.PositionX-1] = player.Id;
-						player.PositionX--;
-						player.Oriente = 'd';
+						this.Grille[joueurs[player].PositionY][joueurs[player].PositionX-1] = joueurs[player].Id;
+						joueurs[player].PositionX--;
+						joueurs[player].Oriente = 'd';
 						break;
 			
 			case 'd' :  
-						this.Grille[player.PositionY][player.PositionX+1] = player.Id;
-						player.PositionX++;
-						player.Oriente = 'g';
+						this.Grille[joueurs[player].PositionY][joueurs[player].PositionX+1] = joueurs[player].Id;
+						joueurs[player].PositionX++;
+						joueurs[player].Oriente = 'g';
 						break;
 		}
 		return this;
 	}
 	
-	public ArrayList<GameBoard> next(Player player) {
+	public ArrayList<GameBoard> next (int player) {
 		
 		ArrayList<GameBoard> GMPossible = new ArrayList<GameBoard>();
-		Player joueur;
-		GameBoard gm;
+		GameBoard gbCopy;
 		
-		gm = CopyGameBoard(this);
-		joueur = new Player(player.Id, player.PositionX, player.PositionY, player.Oriente);
-		if (joueur.PositionY > 0 && player.Oriente != 'h') {
-			if (gm.Grille[joueur.PositionY-1][joueur.PositionX] == ".") {
-				GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'h');
+		gbCopy = CopyGameBoard(this);
+		if (joueurs[player].PositionY > 0 && joueurs[player].Oriente != 'h') {
+			if (gbCopy.Grille[joueurs[player].PositionY-1][joueurs[player].PositionX] == ".") {
+				GMPossible = AjoutGameBoard(GMPossible, gbCopy, player, 'h');
 			}
 		}
 		
-		gm = CopyGameBoard(this);
-		joueur = new Player(player.Id, player.PositionX, player.PositionY, player.Oriente);
-		if(joueur.PositionY < this.Hauteur-1 && player.Oriente != 'b') {
-			if (gm.Grille[joueur.PositionY+1][joueur.PositionX] == ".") {
-				GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'b');
+		gbCopy = CopyGameBoard(this);
+		if(joueurs[player].PositionY < this.Hauteur-1 && joueurs[player].Oriente != 'b') {
+			if (gbCopy.Grille[joueurs[player].PositionY+1][joueurs[player].PositionX] == ".") {
+				GMPossible = AjoutGameBoard(GMPossible, gbCopy, player, 'b');
 			}
 		}
 
-		gm = CopyGameBoard(this);
-		joueur = new Player(player.Id, player.PositionX, player.PositionY, player.Oriente);
-		if(joueur.PositionX > 0 && player.Oriente != 'g') {
-			if (gm.Grille[joueur.PositionY][joueur.PositionX-1] == ".") {
-				GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'g');
+		gbCopy = CopyGameBoard(this);
+		if(joueurs[player].PositionX > 0 && joueurs[player].Oriente != 'g') {
+			if (gbCopy.Grille[joueurs[player].PositionY][joueurs[player].PositionX-1] == ".") {
+				GMPossible = AjoutGameBoard(GMPossible, gbCopy, player, 'g');
 			}
 		}
 
-		gm = CopyGameBoard(this);
-		joueur = new Player(player.Id, player.PositionX, player.PositionY, player.Oriente);
-		if(joueur.PositionX < this.Longueur-1 && player.Oriente != 'd') {
-			if (gm.Grille[joueur.PositionY][joueur.PositionX+1] == ".") {
-				GMPossible = AjoutGameBoard(GMPossible, gm, joueur, 'd');
+		gbCopy = CopyGameBoard(this);
+		if(joueurs[player].PositionX < this.Longueur-1 && joueurs[player].Oriente != 'd') {
+			if (gbCopy.Grille[joueurs[player].PositionY][joueurs[player].PositionX+1] == ".") {
+				GMPossible = AjoutGameBoard(GMPossible, gbCopy, player, 'd');
 			}
 		}
 		
 		return GMPossible;
 	}
 	
-	public static ArrayList<GameBoard> AjoutGameBoard (ArrayList<GameBoard> ListeGB, GameBoard GB, Player joueur, char move) {
+	public static ArrayList<GameBoard> AjoutGameBoard (ArrayList<GameBoard> ListeGB, GameBoard GB, int joueur, char move) {
 
 		GB.Play(joueur, move);
-		GB.Coup = move;
-		GB.player = joueur;
 		ListeGB.add(GB);
 		return ListeGB;
 	}
 	
-	public static GameBoard CopyGameBoard (GameBoard gb) {
+	public static GameBoard CopyGameBoard (GameBoard gbToCopy) {
 		
-		GameBoard gm = new GameBoard();
+		GameBoard gbCopy = new GameBoard();
 		
-		for(int i = 0; i < gb.Hauteur; i++){
-			for(int j = 0; j < gb.Longueur; j++){
-				gm.Grille[i][j] = gb.Grille[i][j];
+		for(int i = 0; i < gbToCopy.Hauteur; i++){
+			for(int j = 0; j < gbToCopy.Longueur; j++){
+				gbCopy.Grille[i][j] = gbToCopy.Grille[i][j];
 			}
 		}
-		return gm;
+		gbCopy.joueurs = gbToCopy.joueurs;
+
+
+		for(int i = 0; i < gbToCopy.joueurs.length; i++){
+			System.out.println(gbToCopy.joueurs[i].PositionX + " " + gbToCopy.joueurs[i].PositionY);
+		}
+		System.out.println("-----------------------------------");
+		for(int i = 0; i < gbCopy.joueurs.length; i++){
+			System.out.println(gbCopy.joueurs[i].PositionX + " " + gbCopy.joueurs[i].PositionY);
+		}
+		System.out.println("===================================");
+		
+		return gbCopy;
 	}
 	
 	public String lireCase(int x, int y) {
