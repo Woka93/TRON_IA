@@ -7,6 +7,7 @@ public class GameBoard {
 	int Longueur; 	//PositionX
 	int Hauteur;	//PositionY
 	char Coup;
+	Player player;
 	String[][] Grille;
 	
 	public GameBoard () {
@@ -111,6 +112,7 @@ public class GameBoard {
 
 		GB.Play(joueur, move);
 		GB.Coup = move;
+		GB.player = joueur;
 		ListeGB.add(GB);
 		return ListeGB;
 	}

@@ -5,19 +5,21 @@ import java.util.Collections;
 
 public class JeuTron {
 	
+	
+	
 	public static void main(String[] args) {
 		
 		ArrayList<GameBoard> GMpossible = new ArrayList<GameBoard>();
 		char move;
 		Player joueur1 = new Player("1",0,0,'g');
-		Player joueur2 = new Player("2",9,9,'h');
+		Player joueur2 = new Player("2",9,9,'d');
 		GameBoard Grille = new GameBoard();
 		boolean FinPartie = false;
 		int Tour = 0;
 		
 		Grille.InitGrille(joueur1, joueur2);
 		
-		while(!FinPartie){
+		/*while(!FinPartie){
 			if(Tour%2 == 0){
 				System.out.println("Joueur 1 :");
 				GMpossible = Grille.next(joueur1);
@@ -43,11 +45,19 @@ public class JeuTron {
 				
 				Tour++;
 				
+			}*/
+			
+			//GMpossible = Profondeur(2, GMpossible, Grille, joueur1, joueur2);
+		
+			GMpossible = Grille.next(joueur1);
+			//GMpossible = GMpossible.get(0).next(joueur2);
+			GMpossible = Profondeur(3, GMpossible, Grille, joueur1, joueur2);
+			
+			
+			for( int i = 0 ; i < GMpossible.size(); i++){
+				Affichage(GMpossible.get(i));
 			}
-			
-			Affichage(Grille);
-			
-		}
+		//}
 	}
 	
 	public static char Mouvement(ArrayList<GameBoard> GMpossible, Player joueur1, Player joueur2, int Tour){
@@ -81,4 +91,42 @@ public class JeuTron {
 		}
 		System.out.println("=============================================");
 	}
+	
+	public static ArrayList<GameBoard> Profondeur(int profondeur, ArrayList<GameBoard> GMpossible, GameBoard Grille, Player joueur1, Player joueur2){
+		
+		System.out.println(profondeur);
+		 //Affichage(GMpossible.get(0));
+		
+		if(profondeur == 0){
+			return GMpossible;
+		}
+		if(profondeur % 2 == 1){
+			return Profondeur(profondeur - 1, GMpossible.get(0).next(joueur2) , Grille, GMpossible.get(0).player, joueur2);
+		}else{
+			return Profondeur(profondeur - 1, GMpossible.get(0).next(GMpossible.get(0).player) , Grille, GMpossible.get(0).player, joueur2);
+		}
+		/*if(GMpossible.size() <= 1){
+			return Profondeur(profondeur - 1, GMpossible.get(0).next(GMpossible.get(0).player), Grille, joueur2, joueur1);
+		}
+		if(GMpossible.size() <= 2){
+			return Profondeur(profondeur - 1, GMpossible.get(0).next(GMpossible.get(1).player), Grille, joueur2, joueur1);
+		}*/
+		//return Profondeur(profondeur - 1, GMpossible.get(0).next(GMpossible.get(0).player), Grille, joueur2, joueur1);
+	}
+	
+	public static ArrayList<GameBoard> MAJGrille(ArrayList<GameBoard> GMpossible){
+		
+		for(int i = 0; i < GMpossible.size(); i++){
+			for(int j = 0; j < GMpossible.get(i).Grille.length; j++){
+				for(int k = 0 ; k < GMpossible.get(i).Grille.length; k++){
+					if(GMpossible.get(i).Grille[j][k] == GMpossible.get(i).player.Id && (j != GMpossible.get(i).player.PositionY || k != GMpossible.get(i).player.PositionX)){
+						GMpossible.get(i).Grille[j][k] = "+";
+					}
+				}
+			}
+		}
+		
+		return GMpossible;
+	}
 }
+
