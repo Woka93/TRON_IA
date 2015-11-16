@@ -3,18 +3,17 @@ package moteur;
 public class Dijkstra {
 	
 	GameBoard plateau;
+	Player joueur;
 	
-	public Dijkstra (GameBoard plateau) {
+	public Dijkstra (GameBoard plateau, Player joueur) {
 		this.plateau = plateau;
+		this.joueur = joueur;
 	}
 	
-	public int Evaluation (Player joueur1, Player joueur2) {
-		return value(joueur1, calculer(joueur1), calculer(joueur2));
-	}
-	
-	public GameBoard calculer(Player joueur) {
+	public GameBoard calculer() {
 		
 		GameBoard gb = new GameBoard();
+		//System.out.println(joueur.Id);
 		
 		for (int i = 0; i < plateau.Hauteur; i++) {
 			for (int j = 0; j < plateau.Longueur; j++) {
@@ -30,12 +29,20 @@ public class Dijkstra {
 			}
 		}
 		
+		/*for(int i = 0; i < gb.Hauteur; i++){
+			for(int j = 0; j < gb.Longueur; j++){
+				System.out.print(gb.Grille[i][j]);
+			}
+			System.out.print("\n");
+		}*/
+		
 		int continuer = 0;
 		
 		while (continuer < 20) {
 			for (int i = 0; i < gb.Hauteur; i++) {
 				for (int j = 0; j < gb.Longueur; j++) {
 					if (gb.lireCase(i, j) != "." && gb.lireCase(i, j) != "+") {
+						//System.out.println(gb.lireCase(i, j));
 						if (i > 0 && gb.Grille[i-1][j] == ".") {
 							gb.Grille[i-1][j] = String.valueOf(Integer.parseInt(gb.lireCase(i,j)) + 1);
 						}
@@ -51,16 +58,26 @@ public class Dijkstra {
 						if (j < gb.Hauteur-1 && gb.Grille[i][j+1] == ".") {
 							gb.Grille[i][j+1] = String.valueOf(Integer.parseInt(gb.lireCase(i,j)) + 1);
 						}
+						//System.out.println("i = " + i + " j = " + j + " Longueur " + gb.Longueur + " LireCase " + gb.lireCase(i, j));
 					}
 				}
 			}
 			continuer++;
 		}
 		
+		/*for(int i = 0; i < gb.Hauteur; i++){
+			for(int j = 0; j < gb.Longueur; j++){
+				System.out.print(gb.Grille[i][j]);
+			}
+			System.out.print("\n");
+		}
+		System.out.print("\n================================\n");*/
+		
+		//System.out.println("===============================");
 		return gb;
 	}
 	
-	public int value(Player joueur, GameBoard gmjoueur1, GameBoard gmjoueur2){
+	public int value(GameBoard gmjoueur1, GameBoard gmjoueur2){
 		String tab[][] = new String[gmjoueur1.Hauteur][gmjoueur1.Longueur];
 		
 		for (int i = 0; i < gmjoueur1.Hauteur; i++) {
@@ -68,6 +85,7 @@ public class Dijkstra {
 				if(gmjoueur1.lireCase(i, j) == "." || gmjoueur2.lireCase(i, j) == "."){
 					tab[i][j] = ".";
 				}else if(gmjoueur1.lireCase(i, j) != "+" && gmjoueur1.lireCase(i, j) != "0"){
+					//System.out.println(gmjoueur1.lireCase(i, j));
 					if(Integer.parseInt(gmjoueur1.Grille[i][j]) < Integer.parseInt(gmjoueur2.Grille[i][j])){
 						tab[i][j] = "1";
 					}else if(Integer.parseInt(gmjoueur1.Grille[i][j]) > Integer.parseInt(gmjoueur2.Grille[i][j])){
@@ -80,6 +98,13 @@ public class Dijkstra {
 				}
 			}
 		}
+		
+		/*for(int i = 0; i < 10; i++){
+			for(int j = 0; j < 10; j++){
+				System.out.print(tab[i][j]);
+			}
+			System.out.print("\n");
+		}*/
 		
 		return compter(tab, joueur.Id);
 	}
