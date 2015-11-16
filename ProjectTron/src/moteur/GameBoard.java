@@ -1,4 +1,4 @@
-package moteur;
+package last;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ public class GameBoard {
 	
 	int Longueur; 	//PositionX
 	int Hauteur;	//PositionY
-	char Coup;
+	char Coup = 'a';
 	String[][] Grille;
 	Player joueur1;
 	Player joueur2;
@@ -127,6 +127,7 @@ public class GameBoard {
 				gm.Grille[i][j] = gb.Grille[i][j];
 			}
 		}
+		gm.Coup = gb.Coup;
 		return gm;
 	}
 	
